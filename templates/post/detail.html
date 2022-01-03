@@ -1,0 +1,8 @@
+{% extends 'post/base.html' %}
+
+{% block body %}
+    <div class="card">
+    <p class="card-header">{{post.user.first_name}} {{post.created | date}}</p>
+    <P class="card-body">{{post.body}}</P>
+    </div>  
+{% endblock body %}

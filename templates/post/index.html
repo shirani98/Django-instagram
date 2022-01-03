@@ -1,0 +1,10 @@
+{% extends 'post/base.html' %}
+
+{% block body %}
+    {% for post in object_list  %}
+    <div class="card">
+    <p class="card-header">{{post.user.first_name}} {{post.created | date}}</p>
+    <a href="{{post.get_absolute_url}}"><P class="card-body">{{post.body}}</P></a>
+    </div>  
+    {% endfor %}
+{% endblock body %}

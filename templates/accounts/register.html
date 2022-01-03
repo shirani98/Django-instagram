@@ -1,0 +1,30 @@
+{% extends 'post/base.html' %}
+
+{% block body %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">username:</label>
+            {{ form.username }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.email.errors }}
+            <label for="{{ form.username.id_for_label }}">email:</label>
+            {{ form.email }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.password1.errors }}
+            <label for="{{ form.password1.id_for_label }}">password:</label>
+            {{ form.password1 }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.password2.errors }}
+            <label for="{{ form.password2.id_for_label }}">confirm  password:</label>
+            {{ form.password2 }}
+        </div><br>
+        <input type="submit" value="Register" class="btn btn-primary">
+
+    </form>
+{% endblock body %}
