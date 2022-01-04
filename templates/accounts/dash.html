@@ -1,6 +1,9 @@
 {% extends 'post/base.html' %}
 
 {% block body %}
+<h2 class="text-center">{{request.user|capfirst}}</h2>
+<h5 class="text-center">{{request.user.profile.bio}}</h5>
+
     {% for post in object_list  %}
     <div class = 'card'>
     <a href="{{post.get_absolute_url}}"> <p class= 'card-body'>{{post.body}}</p></a>

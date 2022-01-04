@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 class login(LoginView):
     template_name = 'accounts/login.html'
     success_url = reverse_lazy('accounts:dash')
-    
+
 class register(CreateView):
     model = User
     form_class = UserRegisterForm
