@@ -2,13 +2,25 @@
 
 {% block body %}
     
-   
+{% if post.user == request.user %}   
+<a href="{% url 'accounts:del' post.slug %}"><p class="btn btn-danger">Delete</p></a>
+<a href="{% url 'accounts:edit' post.slug %}"><p class="btn btn-primary">Edit</p></a>
+{% endif %}
     <div class="card">
-    <p class="card-header">{{post.user.first_name}} {{post.created | date}}</p>
+    <p class="card-header">{{post.user.first_name}} {{post.created | timesince}}</p>
     <P class="card-body">{{post.body}}</P>
-    </div>  <br>
-    {% if post.user == request.user %}   
-    <a href="{% url 'accounts:del' post.slug %}"><p class="btn btn-danger">Delete</p></a>
-    <a href="{% url 'accounts:edit' post.slug %}"><p class="btn btn-primary">Edit</p></a>
-    {% endif %}
+    </div>  <br> 
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class = 'btn btn-primary' type="submit" value="Add Comment">
+
+    </form>
+    {% for item in comments %}
+    <div class="card bg-dark text-white">
+    <p class="card-header">{{item.user}}</p>
+    <p class="card-body">{{item.body}}</p>
+    </div><br>
+    {% endfor %}
+    
 {% endblock body %}
