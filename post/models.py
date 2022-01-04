@@ -13,4 +13,5 @@ class Post(models.Model):
         return f"{self.user} {self.body}"
     def get_absolute_url(self):
         return reverse('post:detail', kwargs={'year': self.created.year,'month': self.created.month,'day': self.created.day,'slug': self.slug})
-    
+    class Meta:
+       ordering = ['-created']

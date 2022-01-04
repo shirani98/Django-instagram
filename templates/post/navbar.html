@@ -9,6 +9,12 @@
         
         {% if user.is_authenticated %}
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:dash' %}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:addpost' %}">Add Post</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:logout' %}">Log out</a>
         </li>
         {% else %}
