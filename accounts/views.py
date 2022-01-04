@@ -1,11 +1,12 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from post.models import Post
 from django.utils.text import slugify
-
+from django.http import HttpResponseRedirect
+from django.http import Http404
 from .forms import UserRegisterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
@@ -34,7 +35,6 @@ class AddPost(LoginRequiredMixin, CreateView):
     def form_valid(self,form):
         new_post = form.save(commit=False)
         new_post.user = self.request.user
-        new_post.slug = slugify(form.cleaned_data['body'][:10])
         new_post.save()
         return super().form_valid(form)
 class UserProfile(ListView):
@@ -47,5 +47,21 @@ class UserProfile(ListView):
     template_name = 'accounts/profile.html'
     
 
-
+class DeletePost(DeleteView):
+    model = Post
+    success_url = reverse_lazy('accounts:dash')
+    
+    def get(self,request, *args, **kwargs):
+        post = Post.objects.get(slug = self.kwargs['slug'])
+        if post.user == request.user :
+            return self.delete(request, *args, **kwargs)
+        else:
+            raise Http404
+    
+class EditPost(UpdateView):
+    model = Post
+    fields = ['body']
+    template_name_suffix = 'edit'
+    
+    
 

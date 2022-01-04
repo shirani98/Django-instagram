@@ -1,8 +1,14 @@
 {% extends 'post/base.html' %}
 
 {% block body %}
+    
+   
     <div class="card">
     <p class="card-header">{{post.user.first_name}} {{post.created | date}}</p>
     <P class="card-body">{{post.body}}</P>
-    </div>  
+    </div>  <br>
+    {% if post.user == request.user %}   
+    <a href="{% url 'accounts:del' post.slug %}"><p class="btn btn-danger">Delete</p></a>
+    <a href="{% url 'accounts:edit' post.slug %}"><p class="btn btn-primary">Edit</p></a>
+    {% endif %}
 {% endblock body %}
