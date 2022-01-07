@@ -1,18 +1,16 @@
 {% extends 'post/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block body %}
     <form method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
 <div class="fieldWrapper">
     {{ form.username.errors }}
-    <label for="{{ form.username.id_for_label }}">username:</label>
-    {{ form.username }}
+    {{ form.username|as_crispy_field }}
 </div><br>
 <div class="fieldWrapper">
     {{ form.password.errors }}
-    <label for="{{ form.password.id_for_label }}">password:</label>
-    {{ form.password }}
+    {{ form.password|as_crispy_field }}
 </div><br>
         <input type="submit" value="Login" class="btn btn-primary">
     </form>

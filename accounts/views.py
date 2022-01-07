@@ -1,42 +1,21 @@
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from post.models import Post
-from django.utils.text import slugify
-from django.http import HttpResponseRedirect
-from django.http import Http404
-from .forms import UserRegisterForm
+from django.http import HttpResponseRedirect, Http404
+from .forms import ProfileEditForm, UserEditForm, UserRegisterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
-
-# Create your views here.
+from .models import Profile
+from django.shortcuts import get_object_or_404
 class login(LoginView):
     template_name = 'accounts/login.html'
-    success_url = reverse_lazy('accounts:dash')
-
 class register(CreateView):
     model = User
     form_class = UserRegisterForm
     success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/register.html'
-
-class PostList(LoginRequiredMixin, ListView):
-    model = Post
-    def get_queryset(self):
-        return Post.objects.filter(user = self.request.user)
-    template_name = 'accounts/dash.html'
-class AddPost(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ('body',)
-    template_name = 'post/addpost.html'
-    success_url = reverse_lazy('accounts:dash')
-    def form_valid(self,form):
-        new_post = form.save(commit=False)
-        new_post.user = self.request.user
-        new_post.save()
-        return super().form_valid(form)
 class UserProfile(ListView):
     def get_queryset(self, **kwargs):
         return Post.objects.filter(user__username = self.kwargs['user'])
@@ -45,23 +24,35 @@ class UserProfile(ListView):
         context['profile'] = User.objects.get(username = self.kwargs['user'])
         return context
     template_name = 'accounts/profile.html'
+class EditProfile(LoginRequiredMixin,UpdateView):
+    model = Profile
+    form_class = ProfileEditForm
+    template_name = 'accounts/update.html'
     
-
-class DeletePost(DeleteView):
-    model = Post
-    success_url = reverse_lazy('accounts:dash')
-    
-    def get(self,request, *args, **kwargs):
-        post = Post.objects.get(slug = self.kwargs['slug'])
-        if post.user == request.user :
-            return self.delete(request, *args, **kwargs)
-        else:
+    def get_object(self, **kwargs):
+        username = self.kwargs.get("user")
+        if self.request.user.username != username:
             raise Http404
-    
-class EditPost(UpdateView):
-    model = Post
-    fields = ['body']
-    template_name_suffix = 'edit'
-    
-    
+        return get_object_or_404(Profile, user__username__iexact=username)    
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['formuser'] = UserEditForm(instance=self.request.user)
+        return context
+    
+    def post(self, *args, **kwargs):
+        form = ProfileEditForm(self.request.POST, instance = self.request.user.profile)
+        form2 = UserEditForm(self.request.POST, instance = self.request.user)
+        
+        if form.is_valid() and form2.is_valid():
+            userdata = form.save(commit=False)
+            userdata.user = self.request.user
+            userdata.save()
+            employeedata = form2.save(commit=False)
+            employeedata.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(
+              self.get_context_data(form=form, form2=form2))
+    def get_success_url(self, **kwargs):         
+        return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})

@@ -8,11 +8,12 @@
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:dash' %}">Dashboard</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:addpost' %}">Add Post</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:profile' user.username %}">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:logout' %}">Log out</a>
