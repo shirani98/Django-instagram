@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+{% load liked_icon %}
+
+  
+
+    <main id="explore">
+        <ul class="explore__users">
+            {% for exuser in object_list %}
+            <li class="explore__user">
+                
+                <div class="explore__user-column">
+                    <img src="{{exuser.avatar.url}}" class="explore__avatar"/>
+                    <div class="explore__info">
+                       <a href="{% url 'accounts:profile' exuser.username %}"><span class="explore__username">{{exuser.username}}</span></a> 
+                        
+                        {% if exuser.firstname and exuser.lastname %}
+                        <span class="explore__full-name">{{exuser.firstname}} {{exuser.lastname}}</span>
+                        {% endif %}
+                            
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            
+        </ul>
+    </main>
+    {% endblock body %}

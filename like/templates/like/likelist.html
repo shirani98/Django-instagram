@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+    <main id="explore">
+        <ul class="explore__users">
+            {% for user in object_list %}
+            <li class="explore__user">
+                
+                <div class="explore__user-column">
+                    <img src="{{user.user.avatar.url}}" class="explore__avatar"/>
+                    <div class="explore__info">
+                        <span class="explore__username">{{user.user.username}}</span>
+                        
+                        {% if user.user.firstname and user.user.lastname %}
+                        <span class="explore__full-name">{{user.user.firstname}} {{user.user.lastname}}</span>
+                        {% endif %}
+                            
+                    </div>
+                </div>
+                <div class="explore__user-column">
+                    <button>Follow</button>
+                </div>
+            </li>
+            {% endfor %}
+            
+        </ul>
+    </main>
+    {% endblock body %}

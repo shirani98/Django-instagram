@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+<main id="profile">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.username.errors }}
+            {{ form.username|as_crispy_field  }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.email.errors }}
+            {{ form.email|as_crispy_field }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.phone.errors }}
+            {{ form.phone|as_crispy_field }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.password1.errors }}
+            {{ form.password1|as_crispy_field }}
+        </div><br>
+        <div class="fieldWrapper">
+            {{ form.password2.errors }}
+            {{ form.password2|as_crispy_field }}
+        </div><br>
+        <input type="submit" value="Register" class="btn btn-primary">
+
+    </form>
+</main>
+{% endblock body %}

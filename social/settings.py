@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'post.apps.PostConfig',
     'accounts.apps.AccountsConfig',
     'comment.apps.CommentConfig',
+    'like.apps.LikeConfig',
+    'follow.apps.FollowConfig',
     'crispy_forms',
 
     
@@ -71,6 +73,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+   
 ]
 
 WSGI_APPLICATION = 'social.wsgi.application'
@@ -123,12 +130,20 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = 'post:index'
+LOGIN_REDIRECT_URL = 'post:feed'
 LOGIN_URL = 'accounts:login'
-LOGOUT_REDIRECT_URL = 'post:index'
+LOGOUT_REDIRECT_URL = 'post:feed'
 
 
+AUTH_USER_MODEL = 'accounts.MyUser'
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

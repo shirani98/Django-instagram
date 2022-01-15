@@ -1,0 +1,34 @@
+<footer class="footer">
+    <div class="footer__column">
+        <nav class="footer__nav">
+            <ul class="footer__list">
+
+                {% if user.is_authenticated %}
+                <li class="footer__list-item">
+                    <a class="footer__link" href="{% url 'accounts:profile' user.username %}">Profile</a>
+                   </li>
+                <li class="footer__list-item">
+                 <a class="footer__link" href="{% url 'post:addpost' %}">Add Post</a>
+                </li>
+                
+                <li class="footer__list-item">
+                    <a class="footer__link" href="{% url 'accounts:explore'%}">Explore</a>
+                   </li>
+                 <li class="footer__list-item">
+                  <a class="footer__link" href="{% url 'accounts:logout' %}">Log out</a>
+                 </li>
+                {% else %}
+                <li class="footer__list-item">
+                <a class="footer__link" href="{% url 'accounts:register' %}">Register</a>
+                </li>
+                <li class="footer__list-item">
+                 <a class="footer__link" href="{% url 'accounts:login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="footer__column">
+        <span class="footer__copyright">© 2022 Django</span>
+    </div>
+</footer>

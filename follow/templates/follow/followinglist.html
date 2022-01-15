@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+  
+
+<main id="explore">
+        <ul class="explore__users">
+            {% for item in object_list %}
+            <li class="explore__user">
+                
+                <div class="explore__user-column">
+                    <img src="{{item.to_user.avatar.url}}" class="explore__avatar"/>
+                    <div class="explore__info">
+                        <a href="{% url 'accounts:profile' item.to_user.username %}"><span class="explore__username">{{item.to_user}}</span></a>
+                        
+                        {% if item.to_user.firstname and item.to_user.lastname %}
+                        <span class="explore__full-name">{{item.to_user.firstname}} {{item.to_user.lastname}}</span>
+                        {% endif %}
+                            
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            
+        </ul>
+    </main>
+
+    
+    {% endblock body %}

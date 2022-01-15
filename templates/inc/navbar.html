@@ -1,0 +1,45 @@
+<nav class="navigation">
+    <div class="">
+        <a class="navbar-brand" href="{% url 'post:feed' %}">Django Social</a>        </div>
+    <div class="navigation__column">
+
+        
+        <form method="GET" action="{% url 'accounts:search' %}">
+                {% csrf_token %}
+            <button class="btn"  type="submit"><i class="fa fa-search"></i></button>
+            <input  type="search" name="search" placeholder="Search">
+        </form>
+    </div>
+    <div class="navigation__column">
+        <ul class="navigations__links">
+            
+            {% if user.is_authenticated %}
+            <li class="navigation__list-item">
+                <a href="{% url 'accounts:explore' %}" class="navigation__link">
+                    <i class="fa fa-compass fa-lg"></i>
+                </a>
+            </li>
+            <li class="navigation__list-item">
+                <a href="{% url 'post:addpost' %}" class="navigation__link">
+                    <i class="fa fa-plus-square-o"></i>
+                </a>
+            </li>
+            <li class="navigation__list-item">
+                <a href="{% url 'accounts:profile' user.username %}" class="navigation__link">
+                    <i class="fa fa-user-o fa-lg"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="navigation__list-item">
+                <a class="navigation__link" href="{% url 'accounts:register' %}">Register</a>
+                </li>
+                <li class="navigation__list-item">
+                 <a class="navigation__link" href="{% url 'accounts:login' %}">Login</a>
+                </li>
+            {% endif %}
+                
+            
+            
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <main id="profile">
+        <header class="profile__header">
+            <div class="profile__column">
+                <img src="{{profile.avatar.url}}" />
+            </div>
+            <div class="profile__column">
+                <div class="profile__title">
+                    <h3 class="profile__username">{{profile.username}}</h3>
+                    
+                    {% if user.is_authenticated %}
+                        
+ 
+                        
+                    {% if request.user == profile %}
+                    <a class="btn" href="{% url 'accounts:editprofile' request.user %}">Edit profile</a>
+                    {% endif %}
+                    {% if request.user != profile and follow != True  %}
+                        <a href="{% url 'follow:follow' profile.id %}" class="btn ">Follow</a>
+                    {% elif request.user != profile and follow %}
+                    <a href="{% url 'follow:unfollow' profile.id %}" class="btn ">Un Follow</a>
+
+                    {% endif %}   
+                    {% endif %}
+                </div>
+                <ul class="profile__stats">
+                    <li class="profile__stat">
+                        <span class="stat__number">{{object_list.count}}</span> posts
+                    </li>
+                    <li class="profile__stat">
+                        <a href="{% url 'follow:followerlist' profile.username %}"><span class="stat__number">{{follower_count}}</span> followers</a>
+                    </li>
+                    <li class="profile__stat">
+                        <a href="{% url 'follow:followinglist' profile.username %}"><span class="stat__number">{{following_count}}</span> following</a>
+                    </li>
+                </ul>
+                <p class="profile__bio">
+                    {{profile.bio}}
+                </p>
+            </div>
+        </header>
+        <section class="profile__photos">
+
+            {% for post in object_list  %}
+                <div class="profile__photo">
+                <img src="{{post.image.url}}" />
+                <a href="{{post.get_absolute_url}}">
+
+                <div class="profile__photo-overlay">
+                    <span class="overlay__item">
+                        <i class="fa fa-heart"></i>
+                        {{post.postlike.count}}
+                    </span>
+                    <span class="overlay__item">
+                        <i class="fa fa-comment"></i>
+                        {{post.pcomment.count}}
+                    </span>
+                </div>
+            </div>
+            </a>
+            {% endfor %}
+            
+        </section>
+    </main>
+    {% endblock body %}

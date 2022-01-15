@@ -1,29 +1,30 @@
 from django import forms
-from django.contrib.auth.models import User
+from .models import MyUser
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from django.core.exceptions import ValidationError
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.CharField(max_length=50)
+    phone = forms.CharField(max_length=50)
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password1','password2')
+        model = MyUser
+        fields = ('username', 'email','phone', 'password1','password2')
+    def clean_phone(self):
+        data = self.cleaned_data['phone']
+        if len(data) == 11:
+            return data
+        else :
+            raise ValidationError("your phone incorrect")
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        user = MyUser.objects.filter(email = data).exists()
+        if user:
+            raise ValidationError("User with this Email already exists.")
+        return data
+
            
 class ProfileEditForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ('bio', 'age')
-        widgets = {
-            'bio': forms.Textarea(attrs={'cols': 8, 'rows': 3, 'class' : 'form-control'}),
-            'age': forms.TextInput(attrs={'class' : 'form-control'}),
-        }
+        model = MyUser
+        fields = ('first_name','last_name', 'bio','phone', 'age','avatar')
         
-class UserEditForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name')
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class' : 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class' : 'form-control'}),
-        }
-
+        

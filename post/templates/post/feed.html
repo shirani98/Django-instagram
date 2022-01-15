@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load liked_icon %}
+{% block body %}
+  
+
+ 
+    <main id="feed">
+        
+        {% for post in object_list %}
+        <div class="photo">
+            
+
+            <header class="photo__header">
+                <a href="{% url 'accounts:profile' post.user.username %}">
+                <img src="{{post.user.avatar.url}}" class="photo__avatar" />
+            
+                <div class="photo__user-info">
+                    
+                    <span class="photo__author">{{post.user.username}}</span></a>
+                </div>
+                
+            </header>    
+            <a href="{{ post.get_absolute_url}}">
+            <img src="{{post.image.url}}" style="width:100%"/>
+            </a>
+            <div class="photo__info">
+                <div class="photo__actions">
+                    <span class="photo__action">
+                        {% define True as continue %}
+                        {% for item in post.postlike.all %}
+                        {% if continue %}
+                        {% if request.user == item.user   %} 
+                        {% define False as continue %}
+                        {% if user.is_authenticated %} <a  href="{% if user.is_authenticated %}{% url 'like:unlike_url' post.id %}{% endif %}">{% endif %} <i class="fa fa-heart fa-lg"></i></a> 
+                        {% endif %}
+                        {% endif %}           
+                        {% if forloop.last  and continue %}
+                        {% if user.is_authenticated %} <a  href="{% if user.is_authenticated %}{% url 'like:like_url' post.id %}{% endif %}">{% endif %} <i class="fa fa-heart-o fa-lg"></i></a>                            
+                        {% endif %}                           
+                        {% empty %}
+                        {% if user.is_authenticated %} <a  href="{% if user.is_authenticated %}{% url 'like:like_url' post.id %}{% endif %}">{% endif %} <i class="fa fa-heart-o fa-lg"></i></a>                            
+                        {%endfor%} 
+                    </span>
+                    <span class="photo__action">
+                        <a href="{{post.get_absolute_url}}"><i class="fa fa-comment-o fa-lg"></i></a>                    </span>
+                </div>
+                <div class="row">
+                    <a href="{% url 'like:listlike' post.slug %}"><span style="margin-right : 20px" class="photo__likes">{{post.postlike.count}} like{{post.postlike.count|pluralize}} </span></a>
+                <span class="photo__likes">{{post.pcomment.count}} Comment{{post.pcomment.count|pluralize}}</span>
+                </div>
+                <ul class="photo__comments">
+                    <li class="photo__comment">
+                        <span class="photo__comment-author">{{post.user.username}}</span> {{post.body}}
+                    </li>
+                    
+                </ul>
+                <span class="photo__time-ago">{{post.created|timesince }} AGO</span>
+            </div>
+        
+        </div>
+        {% endfor %}
+        
+    </main>
+
+    {% endblock body %}

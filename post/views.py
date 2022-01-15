@@ -8,12 +8,23 @@ from .models import Post
 from comment.forms import AddCommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
+from accounts.models import MyUser
+from like.models import Like
+import redis
+from django.conf import settings
+from django.shortcuts import get_object_or_404
 class PostList(ListView):
     model = Post
-    template_name = "post/index.html"
+    template_name = "post/feed.html"
+
+ 
+    
+redis_con = redis.Redis(settings.REDIS_HOST, settings.REDIS_PORT, settings.REDIS_DB)       
 class PostDetail(DetailView):
     model = Post
     template_name = 'post/detail.html'
+    context_object_name = 'post'    
+    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -21,6 +32,9 @@ class PostDetail(DetailView):
         context['comments'] = Comment.objects.filter(post = post, is_reply = False)
         context['form'] = AddCommentForm()
         context['form_reply'] = AddCommentForm()
+        context['post_view'] =redis_con.incr( self.object.id )
+        if self.request.user.is_authenticated:
+            context['is_like'] = Like.objects.filter(post = post , user = self.request.user).exists()
         return context
     
     def post(self, *args, **kwargs):
@@ -28,10 +42,10 @@ class PostDetail(DetailView):
         postslug = self.kwargs.get('slug')
         post = Post.objects.get(slug=postslug)
         Comment.objects.create(body=body,user= self.request.user,post = post)
-        return redirect('post:detail',post.created.year,post.created.month,post.created.day,post.slug)
+        return redirect('post:detail',post.slug)
 class AddPost(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ('body',)
+    fields = ('body','image')
     template_name = 'post/addpost.html'
     def get_success_url(self, **kwargs):         
         return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})
@@ -54,4 +68,4 @@ class DeletePost(LoginRequiredMixin, DeleteView):
 class EditPost(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['body']
-    template_name_suffix = 'edit'
+    template_name = 'post/addpost.html'

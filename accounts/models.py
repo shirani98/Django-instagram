@@ -1,20 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
 # Create your models here.
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class MyUser(AbstractUser):
     bio = models.TextField(null=True, blank=True)
-    age = models.PositiveIntegerField(null=True, blank=True)
-
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.contrib.auth.models import User
-from .models import Profile
-
-
-@receiver(post_save, sender=User)
-def crate_profile_signal(sender, **kwargs):
-    if kwargs['created']:
-        profiles = Profile(user = kwargs['instance'])
-        profiles.save()
+    age = models.CharField(null=True, blank=True, max_length=2)
+    phone = models.CharField(max_length=13,unique=True)
+    avatar = models.ImageField(null=True, blank=True, upload_to='avatar',default = '115-1150152_default-profile-picture-avatar-png-green.jpg')
+    
+    

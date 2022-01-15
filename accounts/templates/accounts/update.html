@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+    <main id="edit-profile">
+        <div class="">
+            <header class="edit-profile__header">
+                <div class="edit-profile__avatar-container">
+                    <img src="{{profile.avatar.url}}" class="edit-profile__avatar" />
+                </div>
+                <h4 class="edit-profile__username">{{profile.username}}</h4>
+            </header>
+            <form method="post" class="edit-profile__form"  enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{form|crispy }}
+
+                <input type="submit" value="Edit profile" class="btn btn-primary">            
+            </form>
+            </div>
+    </main>
+    {% endblock body %}
