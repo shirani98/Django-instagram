@@ -9,7 +9,7 @@ from follow.models import Relation
 from django.urls import reverse_lazy
 from post.models import Post
 from django.http import HttpResponseRedirect, Http404
-from .forms import ProfileEditForm, UserRegisterForm
+from .forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.views import PasswordResetCompleteView, PasswordResetView,PasswordResetConfirmView, PasswordResetDoneView
@@ -26,7 +26,7 @@ class Register(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     model = MyUser
-    form_class = UserRegisterForm
+    form_class = UserCreationForm
     success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/register.html'
 class UserProfile(ListView):
@@ -43,7 +43,7 @@ class UserProfile(ListView):
     template_name = 'accounts/profile.html'
 class EditProfile(LoginRequiredMixin,UpdateView):
     model = MyUser
-    form_class = ProfileEditForm
+    form_class = UserChangeForm
     template_name = 'accounts/update.html'
     
     def get_object(self, **kwargs):
