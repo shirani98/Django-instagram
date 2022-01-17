@@ -147,3 +147,11 @@ AUTH_USER_MODEL = 'accounts.MyUser'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'urusername@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'

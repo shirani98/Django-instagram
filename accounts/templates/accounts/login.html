@@ -15,8 +15,18 @@
     {{ form.password.errors }}
     {{ form.password|as_crispy_field }}
 </div><br>
+<div class="row">
+    <div>
+       <a href="{% url 'accounts:reset' %}"> <p>Forget Password?</p></a>
+
+    </div>
+    <div>
         <input type="submit" value="Login" class="btn btn-primary">
+
+    </div>
+</div>
     </form>
+    
 </main>
 
 {% endblock body %}

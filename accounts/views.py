@@ -12,10 +12,19 @@ from django.http import HttpResponseRedirect, Http404
 from .forms import ProfileEditForm, UserRegisterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.views import PasswordResetCompleteView, PasswordResetView,PasswordResetConfirmView, PasswordResetDoneView
+
 
 class Login(LoginView):
+
     template_name = 'accounts/login.html'
+    redirect_authenticated_user=True
 class Register(CreateView):
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect("post:feed" )
+        return super().dispatch(request, *args, **kwargs)
+
     model = MyUser
     form_class = UserRegisterForm
     success_url = reverse_lazy('accounts:login')
@@ -61,6 +70,18 @@ class SearchUser(ListView):
         q = self.request.GET.get('search')
         return MyUser.objects.filter(username__icontains=q)
     
-        
-        
-            
+class ResetPass(PasswordResetView):
+    template_name = 'accounts/password/reset.html'
+    success_url = reverse_lazy('accounts:resetdone')
+    email_template_name = 'accounts/password/password_reset_email.html'
+    
+class ResetPassDone(PasswordResetDoneView):
+    template_name = 'accounts/password/password_reset_done.html'  
+    
+class RestPassConfirm(PasswordResetConfirmView):
+    template_name = 'accounts/password/password_reset_confirm.html'
+    success_url = reverse_lazy('accounts:resetdonecomplete')
+
+
+class RestPassComplate(PasswordResetCompleteView):
+    template_name = 'accounts/password/password_reset_complate.html'
