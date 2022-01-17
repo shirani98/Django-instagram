@@ -27,7 +27,6 @@ class UserCreationForm(forms.ModelForm):
     
     
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = MyUser
