@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'like.apps.LikeConfig',
     'follow.apps.FollowConfig',
     'crispy_forms',
+    'sorl.thumbnail',
 
     
 ]

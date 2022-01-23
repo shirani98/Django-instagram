@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load thumbnail %}
+
 {% block body %}
 
     <main id="profile">
@@ -44,8 +46,11 @@
         <section class="profile__photos">
 
             {% for post in object_list  %}
+
                 <div class="profile__photo">
-                <img src="{{post.image.url}}" />
+                    {% thumbnail post.image "300x300" as im %}
+                <img src="{{im.url}}" />
+                {% endthumbnail %}
                 <a href="{{post.get_absolute_url}}">
 
                 <div class="profile__photo-overlay">

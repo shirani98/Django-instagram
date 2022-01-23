@@ -59,13 +59,20 @@ class DeletePost(LoginRequiredMixin, DeleteView):
     def get_success_url(self, **kwargs):         
         return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})
     
-    def get(self,request, *args, **kwargs):
-        post = Post.objects.get(slug = self.kwargs['slug'])
-        if post.user == request.user :
-            return self.delete(request, *args, **kwargs)
-        else:
+    def setup(self, request, *args, **kwargs):
+        post = Post.objects.get(slug = kwargs['slug'])
+        if not request.user == post.user :
             raise Http404
+        super().setup(request, *args, **kwargs)
 class EditPost(LoginRequiredMixin, UpdateView):
+        
     model = Post
     fields = ['body']
     template_name = 'post/addpost.html'
+        
+    def setup(self, request, *args, **kwargs):
+        post = Post.objects.get(slug = kwargs['slug'])
+        if not request.user == post.user :
+            raise Http404
+        super().setup(request, *args, **kwargs)
+
