@@ -59,7 +59,7 @@
                     <form method="post" action="">
                     {% csrf_token %}
         
-                    {{ form.body }}
+                    {{ comment_form.body }}
                     <br>
                     <input class = 'btn btn-primary' type="submit" value="Add Comment">
 
@@ -90,8 +90,8 @@
                     <div class="m-4">
                     <form method="post" action="{% url 'comment:addreply' post.slug comment.id  %}">
                         {% csrf_token %}
-                        <label for="{{ form_reply.body.id_for_label }}">reply:</label>
-                        <br><br>{{ form_reply.body }}<br><br>
+                        <label for="{{ reply_comment_form.body.id_for_label }}">reply:</label>
+                        <br><br>{{ reply_comment_form.body }}<br><br>
                         <input class = 'btn btn-primary' type="submit" value="Add reply">
                             </form>
                         </div>

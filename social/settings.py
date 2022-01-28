@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0bv)3n^xtecnui25btq^_z#yac&o-!&-*s8!w4uq_033^i^e%y'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,16 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #Local apps
     'post.apps.PostConfig',
     'accounts.apps.AccountsConfig',
     'comment.apps.CommentConfig',
     'like.apps.LikeConfig',
     'follow.apps.FollowConfig',
+    
+    #Third-party apps
     'crispy_forms',
     'sorl.thumbnail',
 
     
 ]
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
@@ -149,11 +155,12 @@ LOGOUT_REDIRECT_URL = 'post:feed'
 
 AUTH_USER_MODEL = 'accounts.MyUser'
 
+#redis connection config
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
 
-
+#email settings config
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

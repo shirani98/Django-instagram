@@ -14,13 +14,8 @@ urlpatterns = [
     path('register/', Register.as_view(),name = 'register'),
     path('logout/', LogoutView.as_view(),name = 'logout'),
     path('explore/', Explore.as_view(),name = 'explore'),
+    path('search/', SearchUser.as_view(),name = 'search'),
     path('<str:user>/', UserProfile.as_view(),name = 'profile'),
     path('<str:user>/edit/', EditProfile.as_view(),name = 'editprofile'),
-    path('search/', SearchUser.as_view(),name = 'search'),
-
-
-
-
-
 
 ]

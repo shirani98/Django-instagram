@@ -3,6 +3,7 @@ from comment.models import Comment
 
 
 class AddCommentForm(forms.ModelForm):
+    
     class Meta:
         model = Comment
         fields = ("body",)

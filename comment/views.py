@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class ReplyView(LoginRequiredMixin , CreateView):
     model = Comment
     form_class = AddCommentForm
+    
     def post(self, *args, **kwargs):
         reply = self.request.POST.get('body')
         postslug = self.kwargs.get('slug')
@@ -16,5 +17,5 @@ class ReplyView(LoginRequiredMixin , CreateView):
         post = Post.objects.get(slug=postslug)
         comment = Comment.objects.get(id = commentid)
         Comment.objects.create(body=reply,user= self.request.user,post = post,is_reply=True,reply = comment )
-        return redirect('post:detail',post.created.year,post.created.month,post.created.day,post.slug)
+        return redirect('post:detail',post.slug)
     

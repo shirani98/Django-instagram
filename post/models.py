@@ -5,7 +5,6 @@ from django.utils.text import slugify
 from random import randint
 from accounts.models import MyUser
 
-# Create your models here.
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
     image = models.ImageField(upload_to = 'post')
@@ -13,11 +12,12 @@ class Post(models.Model):
     slug = models.CharField(max_length=50,unique=True)
     created = models.DateTimeField(auto_now_add=True)
     
-    
     def __str__(self):
         return f"{self.user} {self.body}"
+    
     def get_absolute_url(self):
         return reverse('post:detail', kwargs={'slug': self.slug})
+    
     class Meta:
        ordering = ['-created']
     

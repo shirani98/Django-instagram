@@ -10,5 +10,4 @@ urlpatterns = [
     path('edit/<slug:slug>/', EditPost.as_view(),name = 'edit'),
     path('',PostList.as_view(),name = 'feed'),
 
-
 ]

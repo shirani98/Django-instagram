@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
+
 class MyUserManager(BaseUserManager):
+    
     def create_user(self, email, phone, username, password=None):
         if not email:
             raise ValueError('Users must have an email address')
@@ -10,14 +12,11 @@ class MyUserManager(BaseUserManager):
         if not username:
             raise ValueError('Users must have an username')
 
-
-
         user = self.model(
             email=self.normalize_email(email),
             phone = phone,
             username = username
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -33,24 +32,20 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class MyUser(AbstractBaseUser):
-    
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone = models.CharField(max_length=13,unique=True)
-
     firstname = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null= True)
-
     date_of_birth = models.DateField(blank=True, null= True)
     bio = models.TextField( blank=True)
     age = models.CharField(null=True, blank=True, max_length=2)
     phone = models.CharField(max_length=13,unique=True)
     avatar = models.ImageField(null=True, blank=True, upload_to='avatar',default = '115-1150152_default-profile-picture-avatar-png-green.jpg')
-    
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['phone','username']
     

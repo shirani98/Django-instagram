@@ -1,5 +1,4 @@
 from django.db import models
-
 from accounts.models import MyUser
 
 # Create your models here.
@@ -10,5 +9,6 @@ class Relation(models.Model):
     
     def __str__(self):
         return f"{self.from_user} to {self.to_user}"
+    
     class Meta:
        ordering = ['-created']
