@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from comment.models import Comment
 from django.shortcuts import redirect
-
+from django.db.models import Q
 from follow.models import Relation
 from .models import Post 
 from comment.forms import AddCommentForm
@@ -24,7 +24,9 @@ class PostList(ListView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             followed_people = Relation.objects.filter(from_user=self.request.user).values('to_user')
-            queryset = Post.objects.filter(user__in = followed_people)
+            
+            queryset = Post.objects.filter(Q(user__in = followed_people)| Q(user = self.request.user)) 
+
         else:
             queryset = Post.objects.all()
         return queryset
@@ -34,7 +36,7 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'post/detail.html'
     context_object_name = 'post'    
-    
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.object
@@ -71,7 +73,7 @@ class AddPost(LoginRequiredMixin, CreateView):
 
 class DeletePost(LoginRequiredMixin, DeleteView):
     model = Post
-    
+        
     def get_success_url(self, **kwargs):         
         return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})
     

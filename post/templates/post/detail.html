@@ -14,7 +14,13 @@
                     <span class="photo__author">{{post.user.username}}</span></a>
                 </div>
                 {% if post.user == request.user %}   
-                <a href="{% url 'post:del' post.slug %}"><p style="margin-left:350px" class="btn btn-danger ">Delete</p></a>
+                
+                <form method="POST" action="{% url 'post:del' post.slug %}">
+                    {% csrf_token %}
+                    <input style="margin-left:350px" class="btn btn-danger " type="submit" value="Delete">
+
+                 </form>
+
                 <a href="{% url 'post:edit' post.slug %}"><p style="margin-left:4px" class="btn btn-primary ">Edit</p></a>
                 {% endif %}
             </header> 
