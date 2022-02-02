@@ -86,5 +86,7 @@ __pycache__/
 local_settings.py
 
 .env
+.fandoghignore
+fandogh.yml
 db.sqlite3
 media
