@@ -10,7 +10,11 @@
             <li class="explore__user">
                 
                 <div class="explore__user-column">
+                    
+                    {% if exuser.avatar %}
                     <img src="{{exuser.avatar.url}}" class="explore__avatar"/>
+                    {% endif %}
+                        
                     <div class="explore__info">
                        <a href="{% url 'accounts:profile' exuser.username %}"><span class="explore__username">{{exuser.username}}</span></a> 
                         

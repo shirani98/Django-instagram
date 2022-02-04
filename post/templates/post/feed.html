@@ -12,7 +12,12 @@
 
             <header class="photo__header">
                 <a href="{% url 'accounts:profile' post.user.username %}">
-                <img src="{{post.user.avatar.url}}" class="photo__avatar" />
+                    
+                    {% if  post.user.avatar %}
+                    <img src="{{post.user.avatar.url}}" class="photo__avatar" />
+
+                    {% endif %}
+                        
             
                 <div class="photo__user-info">
                     

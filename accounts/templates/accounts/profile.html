@@ -6,7 +6,12 @@
     <main id="profile">
         <header class="profile__header">
             <div class="profile__column">
+                
+                {% if profile.avatar %}
                 <img src="{{profile.avatar.url}}" />
+
+                {% endif %}
+                    
             </div>
             <div class="profile__column">
                 <div class="profile__title">
