@@ -13,6 +13,7 @@ from django.http import Http404
 from like.models import Like
 import redis
 from django.conf import settings
+from django.contrib import messages
 
 #redis connection config
 redis_con = redis.Redis(settings.REDIS_HOST, settings.REDIS_PORT, settings.REDIS_DB)       
@@ -62,6 +63,7 @@ class AddPost(LoginRequiredMixin, CreateView):
     template_name = 'post/addpost.html'
     
     def get_success_url(self, **kwargs):         
+        messages.success(self.request,"Post was created successfully","success")
         return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})
     
     def form_valid(self,form):
@@ -75,6 +77,7 @@ class DeletePost(LoginRequiredMixin, DeleteView):
     model = Post
         
     def get_success_url(self, **kwargs):         
+        messages.error(self.request,"Post was delete successfully","danger")
         return reverse_lazy('accounts:profile', kwargs = {'user': self.request.user})
     
     def dispatch(self, request, *args, **kwargs):

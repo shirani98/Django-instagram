@@ -20,10 +20,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('post.urls')),
     path('accounts/', include('accounts.urls')),
     path('comment/', include('comment.urls')),
     path('like/', include('like.urls')),
     path('follow/', include('follow.urls')),
+    path('s/', include('social_django.urls', namespace='social')),
+    path('', include('post.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
