@@ -44,11 +44,13 @@ INSTALLED_APPS = [
     'comment.apps.CommentConfig',
     'like.apps.LikeConfig',
     'follow.apps.FollowConfig',
+    'api.apps.ApiConfig',
     
     #Third-party apps
     'crispy_forms',
     'sorl.thumbnail',
     'social_django',
+    'rest_framework',
 
     
 ]

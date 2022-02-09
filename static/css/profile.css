@@ -27,7 +27,8 @@
   border-radius: 50%;
   transform-style: preserve-3d;
   transition: transform 0.5s linear;
-  
+  width: auto;
+  height: 250px;
 }
 
 @keyframes rotateLynn {
@@ -123,7 +124,8 @@
 }
 
 .profile__photo img {
-  max-width: 100%;
+  width: 290px;
+  height: 290px;  
 }
 
 .profile__photo .profile__photo-overlay {

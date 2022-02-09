@@ -11,12 +11,12 @@ from comment.forms import AddCommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from like.models import Like
-import redis
+from redis import Redis
 from django.conf import settings
 from django.contrib import messages
 
 #redis connection config
-redis_con = redis.Redis(settings.REDIS_HOST, settings.REDIS_PORT, settings.REDIS_DB)       
+redis_con = Redis(settings.REDIS_HOST, settings.REDIS_PORT, settings.REDIS_DB)       
 
 class PostList(ListView):
     model = Post
