@@ -14,7 +14,7 @@ A Instagram clone written in django :)
 <p>
 
 
-    An instagram clone created with Django, Postgres, Redis, and Html/Css
+    A Django social clone created with Django, Postgres, Redis, and Html/Css
  <br>
 Try it here: https://social-shirani98.fandogh.cloud/
 </p>
@@ -142,7 +142,7 @@ http://127.0.0.1:8000
 <hr>
 
 <h4>
-⭐️ Now you can use all the features of instagram clone.
+⭐️ Now you can use all the features of Django social.
 </h4>
 
 
