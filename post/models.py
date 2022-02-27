@@ -6,7 +6,7 @@ from random import randint
 from accounts.models import MyUser
 
 class Post(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name= 'userpost')
     image = models.ImageField(upload_to = 'post')
     body = models.TextField(max_length=255)
     slug = models.CharField(max_length=50,unique=True)

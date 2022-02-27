@@ -12,7 +12,6 @@ class MyUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            phone = phone,
             username = username
         )
         user.set_password(password)
@@ -34,7 +33,7 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
-    phone = models.CharField(max_length=13,unique=True,null=True, blank=True)
+    phone = models.CharField(max_length=13,null=True, blank=True)
     firstname = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null= True)
     date_of_birth = models.DateField(blank=True, null= True)
