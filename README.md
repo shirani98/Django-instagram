@@ -88,6 +88,19 @@ After activating venv you should install the <b>requirements.txt</b> packages. S
 <pre>
 pip install -r requirements.txt
 </pre>
+
+<p>
+Create .env file in project root and put this :
+</p>
+<pre>
+SECRET_KEY = 'Your SECRET_KEY'
+AWS_ACCESS_KEY_ID = 'Your AWS_ACCESS_KEY_ID'
+AWS_SECRET_ACCESS_KEY = 'Your AWS_SECRET_ACCESS_KEY'
+AWS_S3_ENDPOINT_URL = 'AWS_S3_ENDPOINT_URL'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'Your SOCIAL_AUTH_GOOGLE_OAUTH2_KEY'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Your SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'
+</pre>
+
 <h5>
 Configuration of project almost done.
 </h5>
