@@ -3,14 +3,15 @@ from .models import MyUser
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
+
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
+    password2 = forms.CharField(
+        label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = MyUser
-        fields = ('username' , 'email', 'phone')
+        fields = ('username', 'email', 'phone')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -25,14 +26,11 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-    
-    
+
+
 class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('username', 'phone', 'firstname', 'lastname', 'date_of_birth','avatar')
-
-           
-        
-        
+        fields = ('username', 'phone', 'firstname',
+                  'lastname', 'date_of_birth', 'avatar')

@@ -3,16 +3,19 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from accounts.forms import UserChangeForm, UserCreationForm
 from .models import MyUser
+
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'username', 'phone','is_admin')
-    list_filter = ('is_admin','is_active')
+    list_display = ('email', 'username', 'phone', 'is_admin')
+    list_filter = ('is_admin', 'is_active')
     fieldsets = (
-        ('Main', {'fields': ('email','username','phone', 'password')}),
-        ('Personal info', {'fields': ('date_of_birth','firstname','lastname',)}),
-        ('Permissions', {'fields': ('is_admin','is_active',)}),
+        ('Main', {'fields': ('email', 'username', 'phone', 'password')}),
+        ('Personal info', {
+         'fields': ('date_of_birth', 'firstname', 'lastname',)}),
+        ('Permissions', {'fields': ('is_admin', 'is_active',)}),
     )
     add_fieldsets = (
         (None, {
