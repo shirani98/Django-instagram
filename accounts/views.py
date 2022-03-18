@@ -38,19 +38,22 @@ class Register(CreateView):
 class UserProfile(ListView):
     template_name = 'accounts/profile.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.user = MyUser.objects.prefetch_related(
+            'fromuser', 'touser', 'userpost').get(username=self.kwargs['user'])
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self, **kwargs):
-        return Post.objects.filter(user__username=self.kwargs['user'])
+        return self.user.userpost.all()
 
     def get_context_data(self, **kwargs):
         context = super(UserProfile, self).get_context_data(**kwargs)
-        context['profile'] = MyUser.objects.get(username=self.kwargs['user'])
-        context['following_count'] = Relation.objects.filter(
-            from_user__username=self.kwargs['user']).count()
-        context['follower_count'] = Relation.objects.filter(
-            to_user__username=self.kwargs['user']).count()
+        context['profile'] = self.user
+        context['following_count'] = self.user.fromuser.count()
+        context['follower_count'] = self.user.touser.count()
         if self.request.user.is_authenticated:
-            context['follow'] = Relation.objects.filter(
-                from_user=self.request.user, to_user__username=self.kwargs['user']).exists()
+            context['follow'] = self.user.touser.filter(
+                from_user__username=self.request.user.username).exists()
         return context
 
 
@@ -64,11 +67,6 @@ class EditProfile(LoginRequiredMixin, UpdateView):
         if self.request.user.username != username:
             raise Http404
         return get_object_or_404(MyUser, username__iexact=username)
-
-    def get_context_data(self, **kwargs):
-        context = super(EditProfile, self).get_context_data(**kwargs)
-        context['profile'] = MyUser.objects.get(username=self.kwargs['user'])
-        return context
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('accounts:profile', kwargs={'user': self.request.user})

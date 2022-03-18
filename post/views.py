@@ -24,16 +24,7 @@ class PostList(ListView):
     template_name = "post/feed.html"
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            followed_people = Relation.objects.filter(
-                from_user=self.request.user).values('to_user')
-
-            queryset = Post.objects.filter(
-                Q(user__in=followed_people) | Q(user=self.request.user))
-
-        else:
-            queryset = Post.objects.all()
-        return queryset
+        return Post.show_feed(self.request.user)
 
 
 class PostDetail(DetailView):
@@ -43,22 +34,14 @@ class PostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        post = self.object
-        context['comments'] = Comment.objects.filter(post=post, is_reply=False)
+        context['comments'] = self.object.pcomment.filter(is_reply=False)
         context['comment_form'] = AddCommentForm()
         context['reply_comment_form'] = AddCommentForm()
         context['post_view'] = redis_con.incr(self.object.id)
         if self.request.user.is_authenticated:
-            context['is_like'] = Like.objects.filter(
-                post=post, user=self.request.user).exists()
+            context['is_like'] = self.object.postlike.filter(
+                user=self.request.user).exists()
         return context
-
-    def post(self, *args, **kwargs):
-        body = self.request.POST.get('body')
-        postslug = self.kwargs.get('slug')
-        post = Post.objects.get(slug=postslug)
-        Comment.objects.create(body=body, user=self.request.user, post=post)
-        return redirect('post:detail', post.slug)
 
 
 class AddPost(LoginRequiredMixin, CreateView):
@@ -81,15 +64,15 @@ class AddPost(LoginRequiredMixin, CreateView):
 class DeletePost(LoginRequiredMixin, DeleteView):
     model = Post
 
-    def get_success_url(self, **kwargs):
-        messages.error(self.request, "Post was delete successfully", "danger")
-        return reverse_lazy('accounts:profile', kwargs={'user': self.request.user})
-
     def dispatch(self, request, *args, **kwargs):
         post = Post.objects.get(slug=kwargs['slug'])
         if not request.user == post.user:
             raise Http404
         return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self, **kwargs):
+        messages.error(self.request, "Post was delete successfully", "danger")
+        return reverse_lazy('accounts:profile', kwargs={'user': self.request.user})
 
 
 class EditPost(LoginRequiredMixin, UpdateView):

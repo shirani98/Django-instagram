@@ -9,21 +9,13 @@ from django.views.generic import View
 class LikePost(View):
 
     def get(self, request, *args, **kwargs):
-        post_liked = get_object_or_404(Post, pk=kwargs['postid'])
-        user_liked = get_object_or_404(MyUser, username=request.user.username)
-        liked = Like(post=post_liked, user=user_liked)
-        liked.save()
-        return redirect('post:detail', post_liked.slug)
+        return Like.create_like(kwargs['postid'], self.request.user.username)
 
 
 class UnLikePost(View):
 
     def get(self, request, *args, **kwargs):
-        post_liked = get_object_or_404(Post, pk=kwargs['postid'])
-        user_liked = get_object_or_404(MyUser, username=request.user.username)
-        liked = Like.objects.get(post=post_liked, user=user_liked)
-        liked.delete()
-        return redirect('post:detail', post_liked.slug)
+        return Like.delete_like(kwargs['postid'], self.request.user.username)
 
 
 class LikeList(ListView):

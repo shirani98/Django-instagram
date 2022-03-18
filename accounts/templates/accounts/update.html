@@ -6,9 +6,9 @@
         <div class="">
             <header class="edit-profile__header">
                 <div class="edit-profile__avatar-container">
-                    <img src="{{profile.avatar.url}}" class="edit-profile__avatar" />
+                    <img src="{{request.user.avatar.url}}" class="edit-profile__avatar" />
                 </div>
-                <h4 class="edit-profile__username">{{profile.username}}</h4>
+                <h4 class="edit-profile__username">{{request.user.username}}</h4>
             </header>
             <form method="post" class="edit-profile__form"  enctype='multipart/form-data'>
                 {% csrf_token %}

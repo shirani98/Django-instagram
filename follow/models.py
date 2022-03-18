@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import get_object_or_404, redirect
 from accounts.models import MyUser
 
 # Create your models here.
@@ -16,3 +17,23 @@ class Relation(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+    @classmethod
+    def create_follow(cls, user_for_follow, user):
+        user_for_follow = get_object_or_404(MyUser, pk=user_for_follow)
+        if Relation.objects.filter(
+                from_user=user, to_user=user).exists():
+            return redirect("accounts:profile", user=user_for_follow)
+        Relation(from_user=user, to_user=user_for_follow).save()
+        return redirect("accounts:profile", user=user_for_follow)
+
+    @classmethod
+    def create_unfollow(cls, user_for_unfollow, user):
+        user_for_unfollow = get_object_or_404(MyUser, pk=user_for_unfollow)
+        if Relation.objects.filter(
+                from_user=user, to_user=user_for_unfollow).exists():
+            get = get_object_or_404(
+                Relation, from_user=user, to_user=user_for_unfollow)
+            get.delete()
+            return redirect("accounts:profile", user=user_for_unfollow)
+        return redirect("accounts:profile", user=user_for_unfollow)

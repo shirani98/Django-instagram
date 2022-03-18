@@ -8,44 +8,24 @@ from follow.models import Relation
 class FollowUser(View):
 
     def get(self, request, *args, **kwargs):
-        user = get_object_or_404(MyUser, pk=kwargs['id'])
-        check_status = Relation.objects.filter(
-            from_user=request.user, to_user=user).exists()
-        if check_status:
-            return redirect("accounts:profile", user=user)
-        else:
-            Relation(from_user=request.user, to_user=user).save()
-            return redirect("accounts:profile", user=user)
+        return Relation.create_follow(kwargs['id'], request.user)
 
 
 class UnFollowUser(View):
 
     def get(self, request, *args, **kwargs):
-        user = get_object_or_404(MyUser, pk=kwargs['id'])
-        check_status = Relation.objects.filter(
-            from_user=request.user, to_user=user).exists()
-        if check_status:
-            get = get_object_or_404(
-                Relation, from_user=request.user, to_user=user)
-            get.delete()
-            return redirect("accounts:profile", user=user)
-        else:
-            return redirect("accounts:profile", user=user)
+        return Relation.create_unfollow(kwargs['id'], request.user)
 
 
 class FollowerList(ListView):
     template_name = 'follow/followlist.html'
 
     def get_queryset(self, *args, **kwargs):
-        account = self.kwargs['user']
-        user = MyUser.objects.get(username=account)
-        return Relation.objects.filter(to_user=user)
+        return Relation.objects.filter(to_user__username=self.kwargs['user'])
 
 
 class FollowingList(ListView):
     template_name = 'follow/followinglist.html'
 
     def get_queryset(self, *args, **kwargs):
-        account = self.kwargs['user']
-        user = MyUser.objects.get(username=account)
-        return Relation.objects.filter(from_user=user)
+        return Relation.objects.filter(from_user__username=self.kwargs['user'])

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect
 from post.models import Post
 
 
@@ -19,3 +20,17 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-created"]
+
+    @classmethod
+    def create_comment(cls, body, slug, user):
+        post = get_object_or_404(Post, slug=slug)
+        Comment.objects.create(
+            body=body, user=user, post=post, is_reply=False)
+        return redirect('post:detail', post.slug)
+
+    @classmethod
+    def create_reply(cls, body, slug, cid, user):
+        post = get_object_or_404(Post, slug=slug)
+        Comment.objects.create(
+            body=body, user=user, post=post, is_reply=True, reply_id=cid)
+        return redirect('post:detail', post.slug)

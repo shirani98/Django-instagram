@@ -7,16 +7,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
+class AddComment(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = AddCommentForm
+
+    def post(self, *args, **kwargs):
+        return Comment.create_comment(
+            self.request.POST.get('body'),
+            self.kwargs.get('slug'),
+            self.request.user)
+
+
 class ReplyView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = AddCommentForm
 
     def post(self, *args, **kwargs):
-        reply = self.request.POST.get('body')
-        postslug = self.kwargs.get('slug')
-        commentid = self.kwargs.get('cid')
-        post = Post.objects.get(slug=postslug)
-        comment = Comment.objects.get(id=commentid)
-        Comment.objects.create(
-            body=reply, user=self.request.user, post=post, is_reply=True, reply=comment)
-        return redirect('post:detail', post.slug)
+        return Comment.create_reply(
+            self.request.POST.get('body'),
+            self.kwargs.get('slug'),
+            self.kwargs.get('cid'),
+            self.request.user)

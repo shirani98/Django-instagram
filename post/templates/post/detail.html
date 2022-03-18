@@ -67,7 +67,7 @@
                     <span class="photo__time-ago col-lt-4">This post has {{comments.count}} comment{{comments.count|pluralize}}</span>
                     <br>
                     {% if request.user.is_authenticated %}  
-                    <form method="post" action="">
+                    <form method="post" action="{% url 'comment:addcomment' post.slug %}">
                     {% csrf_token %}
         
                     {{ comment_form.body }}
