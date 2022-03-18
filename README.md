@@ -1,4 +1,4 @@
-# Django social network
+# Django social network (instagram)
 
 
     
