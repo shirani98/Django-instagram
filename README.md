@@ -159,6 +159,7 @@ http://127.0.0.1:8000
 </h4>
 
 <hr>
+
 ### Thanks to..
 * [Django](https://djangoproject.com)
 
