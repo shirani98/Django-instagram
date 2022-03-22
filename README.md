@@ -159,4 +159,12 @@ http://127.0.0.1:8000
 </h4>
 
 
+### Thanks to..
+* [Django](https://djangoproject.com)
+* [Bootstrap](https://getbootstrap.com/)
+
+### Fork
+Fork and develop are free for everyone. Be sure I'll check your push requests out.
+
+###### Made with :heart:
 
