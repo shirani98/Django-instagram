@@ -16,8 +16,6 @@ A Instagram clone written in django :)
 
     A Django social clone created with Django, Postgres, Redis, and Html/Css
  <br>
-Try it here: https://social-shirani98.fandogh.cloud/
-</p>
 
 <h3>
 ⭐️ Project features 
